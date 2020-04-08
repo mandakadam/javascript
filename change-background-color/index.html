@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+    <style>
+        body{transition: background-color ease-in 0.2s; height: 100vh; display: flex; }
+        #bgvalue{color: #fff; text-shadow: 0 0 2px #000;}
+    </style>
+  </head>
+  <body>
+    <div class="container m-auto">
+        <div class="row">
+            <div class="col text-center">
+                <h1 id="bgvalue"></h1>
+                <div>
+                    <button class="btn btn-dark" id="btn1">Click from Pallete</button>
+                    <button class="btn btn-danger" id="btn2">Change by hex Hex Value!</button>
+                </div>
+            </div> 
+        </div>
+               
+    </div>
+    <script>
+        const btn1 = document.getElementById('btn1');
+        const btn2 = document.getElementById('btn2');
+        const bgvalue = document.getElementById('bgvalue');
+        const body = document.querySelector('body');
+        
+        const colors = ['red', 'orange', 'blue', 'violet', 'pink', 'purple'];
+
+        const hexValues = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'E', 'F']
+
+        bgvalue.innerHTML = colors[0]
+        body.style.backgroundColor = colors[0];
+
+        const changeBackground = () => {
+            const colorIndex = parseInt( Math.random() * colors.length );
+            bgvalue.innerHTML = colors[colorIndex]
+            body.style.backgroundColor = colors[colorIndex];
+        }
+        const changeBackgroundHexColor = () =>{
+            let hex = "#";
+            for(var i=0; i<6; i++){
+               const index = parseInt( Math.random() * hexValues.length );
+               hex += hexValues[index]
+            }
+            bgvalue.innerHTML = hex
+            body.style.backgroundColor = hex;
+        }
+
+        btn1.addEventListener('click', changeBackground);
+        btn2.addEventListener('click', changeBackgroundHexColor);
+
+    </script>
+  </body>
+</html>
