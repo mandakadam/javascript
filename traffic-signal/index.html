@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{font-family: Arial, Helvetica, sans-serif; background: #f5f5f5; font-size: 14px;} 
+        *{margin: 0; padding: 0; }
+
+        .header{background-color: #222; color: #fff; padding: 15px; display: flex; justify-content: space-between;}
+        .signal_wrapper{ display: flex; justify-content: space-between; width: 80%; margin: 50px auto;}
+        .subhd{ font-size: 14px; padding: 0 0 10px 0; margin: 0 0 15px 0; border-bottom: solid 1px #eee;}
+        .signal{list-style: none; padding: 0; background:#000000; width: 30px; padding: 10px; margin: 0 auto; display: flex; flex-direction: column; border-radius: 10px;}
+        .signal li{width: 30px; height:30px; border-radius:50%;background: #525252; margin: 0 0 10px;  filter: grayscale(1);}
+        .signal li:last-child{margin-bottom: 0;}
+        .signal li.active{ filter: grayscale(0);}
+        .signal .timer{background: #f3f3f3; line-height: 30px; text-align: center; color: #000; border-color: white;}
+        .signal .green{background: #00ff01;}
+        .signal .yellow{background: #ffff00;}
+        .signal .red{background: #ff4c4c;}
+
+        .btn_group{text-align: center; padding:  50px 0;}
+        .btn_primary, .btn_secondary{border:0; border-radius: 10px; padding: 10px; color: #fff; cursor: pointer;}
+        .btn_primary{ background-color: #1274c0; }
+        .btn_secondary{background-color: #ff4c4c; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>Project :: Traffic Signals</div>
+        <div>Manda Kadam</div>
+    </div>
+    
+    <div class="signal_wrapper">
+        <div>
+            <h3 class="subhd">Signal 1</h3>
+            <ul class="signal" id="signal_1">
+                <li class="green active"></li>
+                <li class="yellow"></li>
+                <li class="red"></li>
+                <li class="timer">1</li>
+            </ul>
+        </div>
+
+        <div>
+            <h3 class="subhd">Signal 2</h3>
+            <ul class="signal" id="signal_2">
+                <li class="green"></li>
+                <li class="yellow"></li>
+                <li class="red active"></li>
+                <li class="timer">1</li>
+            </ul>
+        </div>
+
+        <div>
+            <h3 class="subhd">Signal 3</h3>
+            <ul class="signal" id="signal_3">
+                <li class="green"></li>
+                <li class="yellow"></li>
+                <li class="red active"></li>
+                <li class="timer">1</li>
+            </ul>
+        </div>
+
+        <div>
+            <h3 class="subhd">Signal 4</h3>
+            <ul class="signal" id="signal_4">
+                <li class="green"></li>
+                <li class="yellow"></li>
+                <li class="red active"></li>
+                <li class="timer">1</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="traffic"></div>
+
+    <div class="btn_group">
+        <button class="btn_primary" type="button" id="start_signal_btn">Start Traffic Light</button>
+        <button class="btn_secondary" type="button" id="stop_signal_btn">Stop Traffic Light</button>
+    </div>
+</body>
+
+<script type="text/javascript">
+    // Intializiing Timer Start Point
+    var count_1 = 20; 
+    var count_2 = 20; 
+    var count_3 = 40; 
+    var count_4 = 60; 
+
+    // Setting Timer is at Freed Mode or Not
+    var count_1_freed = true;
+    var count_2_freed = false;
+    var count_3_freed = false;
+    var count_4_freed = false;
+
+    // DOM Selectors for Signals
+    var signal = document.getElementsByClassName('signal');
+    var signal_1 = document.getElementById('signal_1');
+    var signal_2 = document.getElementById('signal_2');
+    var signal_3 = document.getElementById('signal_3');
+    var signal_4 = document.getElementById('signal_4');
+
+    // DOM Selectors for Timers
+    var t1 = signal_1.getElementsByClassName("timer")[0];
+    var t2 = signal_2.getElementsByClassName("timer")[0];
+    var t3 = signal_3.getElementsByClassName("timer")[0];
+    var t4 = signal_4.getElementsByClassName("timer")[0];
+
+    // Setting Timer Value at Initial position
+    t1.innerHTML = count_1;
+    t2.innerHTML = count_2;
+    t3.innerHTML = count_3;
+    t4.innerHTML = count_4;
+
+    // Crating Interval Variables 
+    var timer_1 = null;
+    var timer_2 = null;
+    var timer_3 = null;
+    var timer_4 = null;
+    
+    //Start when dom ready
+    startIntervals()
+
+    // Start when button click
+    start_signal_btn.onclick = function() {
+        startIntervals()
+    };
+    
+    // Clear Interval
+    stop_signal_btn.onclick = function() {
+        clearInterval(timer_1)
+        clearInterval(timer_2)
+        clearInterval(timer_3)
+        clearInterval(timer_4)
+    };
+   
+   function startIntervals(){
+        timer_1 = setInterval(()=>setSignalInterval_1(), 1000);
+        timer_2 = setInterval(()=>setSignalInterval_2(), 1000);
+        timer_3 = setInterval(()=>setSignalInterval_3(), 1000);
+        timer_4 = setInterval(()=>setSignalInterval_4(), 1000);
+   }
+  
+    // Function for Setting Colors as per values
+    function setSignalColors(count, signal_el, count_freed){
+        var active =  signal_el.getElementsByClassName("active")[0]
+        if(count_freed == true){
+            if(count > 5){
+                active.classList.remove('active')
+                signal_el.getElementsByClassName("green")[0].classList.add('active')
+            }
+            else if(count > 0){
+                active.classList.remove('active')
+                signal_el.getElementsByClassName("yellow")[0].classList.add('active')
+            }
+            else{
+                active.classList.remove('active')
+                signal_el.getElementsByClassName("red")[0].classList.add('active');
+            }
+        } 
+        else{
+            active.classList.remove('active')
+            signal_el.getElementsByClassName("red")[0].classList.add('active');
+        }
+    }
+    
+    /******
+
+    (Note: All other defination concept is same for all setting singals. Since  variables are globally set, need to repeat the code with different variables.)
+
+    *******/
+
+    // Setting First Signal 
+    function setSignalInterval_1(){
+        if(count_1 > 0){
+            count_1 -= 1
+        }
+        else{
+            if(count_1_freed){
+                count_1_freed = false
+                count_1 = 60
+            }
+            else{
+                count_1_freed = true
+                count_1 = 20
+            }
+        }
+        t1.innerHTML = count_1
+        setSignalColors(count_1, signal_1, count_1_freed)
+    }
+
+    // Setting Second Signal
+    function setSignalInterval_2(){
+        if(count_2 > 0){
+            count_2 -= 1
+        }
+        else{
+            if(count_2_freed){
+                count_2_freed = false
+                count_2 = 60
+            }
+            else{
+                count_2_freed = true
+                count_2 = 20
+            }
+        }
+            t2.innerHTML = count_2
+            setSignalColors(count_2, signal_2, count_2_freed)
+    }
+
+    // Setting Third Signal
+    function setSignalInterval_3(){
+        if(count_3 > 0){
+            count_3 -= 1
+        }
+        else{
+            if(count_3_freed){
+                count_3_freed = false
+                count_3 = 60
+            }
+            else{
+                count_3_freed = true
+                count_3 = 20
+            }
+        }
+            t3.innerHTML = count_3
+            setSignalColors(count_3, signal_3, count_3_freed)
+    }
+
+    // Setting Fourth Signal
+    function setSignalInterval_4(){
+        if(count_4 > 0){
+            count_4 -= 1
+        }
+        else{
+            if(count_4_freed){
+                count_4_freed = false
+                count_4 = 60
+            }
+            else{
+                count_4_freed = true
+                count_4 = 20
+            }
+        }
+            t4.innerHTML = count_4
+            setSignalColors(count_4, signal_4, count_4_freed)
+    }
+    
+
+
+
+</script>
+</html>
